@@ -213,4 +213,13 @@ if st.button("✨ Generate Research Report", type="primary"):
                     report = res_data["candidates"][0]["content"]["parts"][0]["text"]
                     st.success("✅ Research Report Generated Successfully!")
                     
-                    st.
+                    st.markdown("---")
+                    st.markdown(f"""
+                        <div class="report-container">
+                            {report}
+                        </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.error(f"API Error: {res_data}")
+            except Exception as e:
+                st.error(f"An error occurred: {str(e)}")
