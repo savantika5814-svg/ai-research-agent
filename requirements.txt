@@ -1,4 +1,5 @@
 streamlit
+tavily-python
+google-genai
 requests
 python-dotenv
-tavily-python
