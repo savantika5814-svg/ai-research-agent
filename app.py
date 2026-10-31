@@ -16,7 +16,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Warm Cream & Pastel Pink Theme with Helping Hand Branding
+# Custom CSS for Warm Cream & Pastel Pink Theme with High-Contrast Sidebar Text
 st.markdown("""
     <style>
     /* Main Background - Warm Champagne / Cream */
@@ -25,10 +25,13 @@ st.markdown("""
         color: #374151;
     }
     
-    /* Sidebar Styling - Soft Rose Tint */
+    /* Sidebar Styling - Soft Rose Tint with Dark Readable Text */
     section[data-testid="stSidebar"] {
         background-color: #FDE2E8 !important;
         border-right: 1px solid #FBCFE8;
+    }
+    section[data-testid="stSidebar"] * {
+        color: #4A044E !important;
     }
     
     /* Inputs */
@@ -102,7 +105,7 @@ with st.sidebar:
     st.markdown("""
     <div style="text-align: center; margin-bottom: 15px; margin-top: 10px;">
         <svg width="75" height="75" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="42" fill="#FCE7F3" stroke="#F472B6" stroke-width="3"/>
+            <circle cx="50" cy="50" r="42" fill="#FFFFFF" stroke="#EC4899" stroke-width="3"/>
             <!-- Helping Hand / Cradling Support Icon -->
             <path d="M30 60C30 60 38 72 50 72C62 72 70 60 70 60" stroke="#DB2777" stroke-width="5" stroke-linecap="round"/>
             <path d="M38 52L45 59L65 38" stroke="#DB2777" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -123,7 +126,7 @@ with st.sidebar:
 st.markdown("""
 <div class="logo-header">
     <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="42" fill="#FCE7F3" stroke="#F472B6" stroke-width="3"/>
+        <circle cx="50" cy="50" r="42" fill="#FFFFFF" stroke="#EC4899" stroke-width="3"/>
         <!-- Helping Hand / Cradling Support Icon -->
         <path d="M30 60C30 60 38 72 50 72C62 72 70 60 70 60" stroke="#DB2777" stroke-width="5" stroke-linecap="round"/>
         <path d="M38 52L45 59L65 38" stroke="#DB2777" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -210,13 +213,4 @@ if st.button("✨ Generate Research Report", type="primary"):
                     report = res_data["candidates"][0]["content"]["parts"][0]["text"]
                     st.success("✅ Research Report Generated Successfully!")
                     
-                    st.markdown("---")
-                    st.markdown(f"""
-                        <div class="report-container">
-                            {report}
-                        </div>
-                    """, unsafe_allow_html=True)
-                else:
-                    st.error(f"API Error: {res_data}")
-            except Exception as e:
-                st.error(f"An error occurred: {str(e)}")
+                    st.
