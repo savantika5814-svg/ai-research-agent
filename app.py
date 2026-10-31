@@ -1,14 +1,13 @@
 import streamlit as st
 import os
+import requests
 import time
 
-# Import Tavily and Google GenAI cleanly
+# Import Tavily cleanly
 try:
     from tavily import TavilyClient
 except ImportError:
     from tavily import Client as TavilyClient
-
-from google import genai
 
 # Streamlit Page Setup
 st.set_page_config(
@@ -225,9 +224,14 @@ if st.button("✨ Generate Research Report", type="primary"):
                 # 1. Search Tavily
                 search_context, tavily_latency = search_web(topic)
                 
-                # 2. Call Gemini using the official Google GenAI SDK
+                # 2. Call Gemini API securely using Bearer token for OAuth/AQ keys
                 start_llm_time = time.time()
-                client = genai.Client(api_key=GEMINI_API_KEY)
+                url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+                
+                headers = {
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {GEMINI_API_KEY}"
+                }
                 
                 prompt_text = (
                     "You are an expert research assistant and professional technical writer.\n"
@@ -236,16 +240,14 @@ if st.button("✨ Generate Research Report", type="primary"):
                     f"TOPIC TO RESEARCH: {topic}\n\n"
                     f"SEARCH RESULTS & DATA:\n{search_context}"
                 )
+                payload = {"contents": [{"parts": [{"text": prompt_text}]}]}
                 
-                response = client.models.generate_content(
-                    model='gemini-2.5-flash',
-                    contents=prompt_text,
-                )
-                
+                res = requests.post(url, headers=headers, json=payload)
                 llm_latency = round(time.time() - start_llm_time, 2)
-                report = response.text
+                res_data = res.json()
                 
-                if report:
+                if "candidates" in res_data:
+                    report = res_data["candidates"][0]["content"]["parts"][0]["text"]
                     st.success("✅ Research Report Generated Successfully!")
                     
                     # Technical Agent Execution Trace Expander
@@ -263,6 +265,6 @@ if st.button("✨ Generate Research Report", type="primary"):
                         </div>
                     """, unsafe_allow_html=True)
                 else:
-                    st.error("No response generated from model.")
+                    st.error(f"API Error: {res_data}")
             except Exception as e:
                 st.error(f"An error occurred: {str(e)}")
