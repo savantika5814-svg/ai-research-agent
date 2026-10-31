@@ -11,24 +11,24 @@ except ImportError:
 # Streamlit Page Setup
 st.set_page_config(
     page_title="VeritasAI | Autonomous Research Agent", 
-    page_icon="🌸", 
+    page_icon="🤝", 
     layout="centered",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Pastel Pink & Off-White Theme
+# Custom CSS for Warm Cream & Pastel Pink Theme with Helping Hand Branding
 st.markdown("""
     <style>
-    /* Main Background */
+    /* Main Background - Warm Champagne / Cream */
     .stApp {
-        background-color: #FAFAFA;
+        background-color: #FAF8F5;
         color: #374151;
     }
     
-    /* Sidebar Styling */
+    /* Sidebar Styling - Soft Rose Tint */
     section[data-testid="stSidebar"] {
-        background-color: #FFF5F7 !important;
-        border-right: 1px solid #FCE7F3;
+        background-color: #FDE2E8 !important;
+        border-right: 1px solid #FBCFE8;
     }
     
     /* Inputs */
@@ -40,8 +40,8 @@ st.markdown("""
         color: #374151;
     }
     .stTextInput input:focus {
-        border-color: #F472B6;
-        box-shadow: 0 0 0 2px rgba(244, 114, 182, 0.2);
+        border-color: #EC4899;
+        box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
     }
     
     /* Action Button */
@@ -49,11 +49,11 @@ st.markdown("""
         border-radius: 12px;
         font-weight: 600;
         width: 100%;
-        background: linear-gradient(135deg, #F472B6 0%, #FB7185 100%);
+        background: linear-gradient(135deg, #EC4899 0%, #F43F5E 100%);
         color: white;
         border: none;
         padding: 0.65rem 1rem;
-        box-shadow: 0 4px 10px rgba(244, 114, 182, 0.25);
+        box-shadow: 0 4px 10px rgba(236, 72, 153, 0.25);
         transition: transform 0.15s ease, opacity 0.2s ease;
     }
     .stButton button:hover {
@@ -67,8 +67,8 @@ st.markdown("""
         background-color: #FFFFFF;
         padding: 2.2rem;
         border-radius: 16px;
-        border: 1px solid #FCE7F3;
-        box-shadow: 0 10px 25px rgba(244, 114, 182, 0.08);
+        border: 1px solid #FBCFE8;
+        box-shadow: 0 10px 25px rgba(236, 72, 153, 0.08);
         color: #1F2937;
         line-height: 1.7;
     }
@@ -84,7 +84,7 @@ st.markdown("""
         margin: 0;
         font-size: 2.6rem;
         font-weight: 800;
-        color: #9D174D;
+        color: #831843;
         letter-spacing: -0.5px;
     }
     
@@ -97,19 +97,21 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Sidebar Design
+# Sidebar Design with Helping Hand Logo
 with st.sidebar:
-    # Sidebar SVG Logo (Pastel Pink Theme)
     st.markdown("""
     <div style="text-align: center; margin-bottom: 15px; margin-top: 10px;">
-        <svg width="70" height="70" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="75" height="75" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="42" fill="#FCE7F3" stroke="#F472B6" stroke-width="3"/>
-            <path d="M32 40L50 70L68 40" stroke="#DB2777" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="50" cy="30" r="6" fill="#F472B6"/>
+            <!-- Helping Hand / Cradling Support Icon -->
+            <path d="M30 60C30 60 38 72 50 72C62 72 70 60 70 60" stroke="#DB2777" stroke-width="5" stroke-linecap="round"/>
+            <path d="M38 52L45 59L65 38" stroke="#DB2777" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Spark / Guidance Node -->
+            <circle cx="65" cy="30" r="5" fill="#EC4899"/>
         </svg>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center; color: #9D174D;'>VeritasAI</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center; color: #831843;'>VeritasAI</h3>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("**Search Engine:** Tavily AI API")
     st.markdown("**Inference Engine:** Google Gemini 3.8 Flash")
@@ -117,13 +119,16 @@ with st.sidebar:
     st.markdown("---")
     st.info("💡 **Tip:** Ask broad market analysis, technical comparisons, or industry trends.")
 
-# Main Title Header with Logo
+# Main Title Header with Helping Hand Logo
 st.markdown("""
 <div class="logo-header">
-    <svg width="55" height="55" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="42" fill="#FCE7F3" stroke="#F472B6" stroke-width="3"/>
-        <path d="M32 40L50 70L68 40" stroke="#DB2777" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="50" cy="30" r="6" fill="#F472B6"/>
+        <!-- Helping Hand / Cradling Support Icon -->
+        <path d="M30 60C30 60 38 72 50 72C62 72 70 60 70 60" stroke="#DB2777" stroke-width="5" stroke-linecap="round"/>
+        <path d="M38 52L45 59L65 38" stroke="#DB2777" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Spark / Guidance Node -->
+        <circle cx="65" cy="30" r="5" fill="#EC4899"/>
     </svg>
     <h1>VeritasAI</h1>
 </div>
@@ -181,7 +186,7 @@ if st.button("✨ Generate Research Report", type="primary"):
     elif not GEMINI_API_KEY or not TAVILY_API_KEY:
         st.error("Server API keys are not configured properly.")
     else:
-        with st.spinner("🌸 Searching the web & synthesizing report via Gemini 3.8 Flash..."):
+        with st.spinner("🤝 Searching the web & synthesizing report via Gemini 3.8 Flash..."):
             try:
                 # 1. Search Tavily
                 search_context = search_web(topic)
