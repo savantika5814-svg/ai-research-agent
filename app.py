@@ -1,268 +1,99 @@
 import streamlit as st
-import os
-import time
-
-# Import Tavily cleanly
-try:
-    from tavily import TavilyClient
-except ImportError:
-    from tavily import Client as TavilyClient
-
 from google import genai
+from tavily import TavilyClient
 
-# Streamlit Page Setup
+# --- Page Config & Styling ---
 st.set_page_config(
-    page_title="VeritasAI | Autonomous Research Agent", 
-    page_icon="🤝", 
-    layout="centered",
-    initial_sidebar_state="expanded"
+    page_title="VeritasAI - Autonomous Research Agent",
+    page_icon="🔍",
+    layout="wide",
 )
 
-# Custom CSS for Theme Consistency & High-Contrast Text Fixes
-st.markdown("""
-    <style>
-    /* Main Background - Warm Champagne / Cream */
-    .stApp {
-        background-color: #FAF8F5;
-        color: #1F2937 !important;
-    }
-    
-    /* Global Text Color Override for Readability */
-    .stApp p, .stApp span, .stApp label, .stApp div {
-        color: #1F2937;
-    }
-    
-    /* Sidebar Styling - Soft Rose Tint with Dark Readable Text */
-    section[data-testid="stSidebar"] {
-        background-color: #FDE2E8 !important;
-        border-right: 1px solid #FBCFE8;
-    }
-    section[data-testid="stSidebar"] * {
-        color: #4A044E !important;
-    }
-    
-    /* Text Inputs & Placeholders */
-    .stTextInput label {
-        color: #4A044E !important;
-        font-weight: 600;
-    }
-    .stTextInput input {
-        border-radius: 12px;
-        padding: 12px;
-        border: 1.5px solid #FBCFE8;
-        background-color: #FFFFFF !important;
-        color: #1F2937 !important;
-    }
-    .stTextInput input::placeholder {
-        color: #9CA3AF !important;
-        opacity: 1;
-    }
-    .stTextInput input:focus {
-        border-color: #EC4899;
-        box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
-    }
-    
-    /* Streamlit Alert Boxes Fix */
-    div[data-baseweb="notification"], .stAlert {
-        border-radius: 12px !important;
-    }
-    .stAlert p, div[data-baseweb="notification"] div {
-        color: #1F2937 !important;
-        font-weight: 600 !important;
-    }
-    
-    /* Action Button */
-    .stButton button {
-        border-radius: 12px;
-        font-weight: 600;
-        width: 100%;
-        background: linear-gradient(135deg, #EC4899 0%, #F43F5E 100%);
-        color: #FFFFFF !important;
-        border: none;
-        padding: 0.65rem 1rem;
-        box-shadow: 0 4px 10px rgba(236, 72, 153, 0.25);
-        transition: transform 0.15s ease, opacity 0.2s ease;
-    }
-    .stButton button p {
-        color: #FFFFFF !important;
-    }
-    .stButton button:hover {
-        opacity: 0.92;
-        transform: translateY(-1px);
-    }
-    
-    /* Report Output Container */
-    .report-container {
-        background-color: #FFFFFF;
-        padding: 2.2rem;
-        border-radius: 16px;
-        border: 1px solid #FBCFE8;
-        box-shadow: 0 10px 25px rgba(236, 72, 153, 0.08);
-        color: #1F2937 !important;
-        line-height: 1.7;
-    }
-    .report-container * {
-        color: #1F2937 !important;
-    }
-    
-    /* Header Layout */
-    .logo-header {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 0.2rem;
-    }
-    .logo-header h1 {
-        margin: 0;
-        font-size: 2.6rem;
-        font-weight: 800;
-        color: #831843 !important;
-        letter-spacing: -0.5px;
-    }
-    
-    /* Secondary text */
-    .sub-text {
-        color: #4B5563 !important;
-        font-size: 1.05rem;
-        margin-bottom: 1.5rem;
-    }
-    </style>
-""", unsafe_allow_html=True)
+st.sidebar.markdown("### VeritasAI")
+st.sidebar.markdown(
+    "Autonomous web research & intelligent report synthesis engine."
+)
 
-# Initialize Session State for Research Topic
-if "research_topic" not in st.session_state:
-    st.session_state.research_topic = ""
-
-# Sidebar Design with Helping Hand Logo
-with st.sidebar:
-    st.markdown("""
-    <div style="text-align: center; margin-bottom: 15px; margin-top: 10px;">
-        <svg width="75" height="75" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="42" fill="#FFFFFF" stroke="#EC4899" stroke-width="3"/>
-            <path d="M30 60C30 60 38 72 50 72C62 72 70 60 70 60" stroke="#DB2777" stroke-width="5" stroke-linecap="round"/>
-            <path d="M38 52L45 59L65 38" stroke="#DB2777" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="65" cy="30" r="5" fill="#EC4899"/>
-        </svg>
-    </div>
-    """, unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center; color: #831843 !important;'>VeritasAI</h3>", unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("**Search Engine:** Tavily AI API")
-    st.markdown("**Inference Engine:** Google Gemini 2.5 Flash")
-    st.markdown("**Security:** Server-Side Encrypted Secrets")
-    st.markdown("---")
-    st.info("💡 **Tip:** Ask broad market analysis, technical comparisons, or industry trends.")
-
-# Main Title Header with Helping Hand Logo
-st.markdown("""
-<div class="logo-header">
-    <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="42" fill="#FFFFFF" stroke="#EC4899" stroke-width="3"/>
-        <path d="M30 60C30 60 38 72 50 72C62 72 70 60 70 60" stroke="#DB2777" stroke-width="5" stroke-linecap="round"/>
-        <path d="M38 52L45 59L65 38" stroke="#DB2777" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="65" cy="30" r="5" fill="#EC4899"/>
-    </svg>
-    <h1>VeritasAI</h1>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown('<p class="sub-text">Autonomous web research & intelligent report synthesis engine.</p>', unsafe_allow_html=True)
-
-# Securely load API keys from Streamlit Cloud Secrets (Server-side)
+# --- API Keys Validation ---
 try:
-    GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
-    TAVILY_API_KEY = st.secrets["TAVILY_API_KEY"]
+  gemini_api_key = st.secrets["GEMINI_API_KEY"].strip()
+  tavily_api_key = st.secrets["TAVILY_API_KEY"].strip()
 except Exception:
-    from dotenv import load_dotenv
-    load_dotenv()
-    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-    TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
+  st.error(
+      "Missing API keys in Streamlit Secrets! Please add `GEMINI_API_KEY` and"
+      " `TAVILY_API_KEY`."
+  )
+  st.stop()
 
-# Quick suggestion chips
-st.markdown("<h5 style='color: #4A044E;'>Quick Topics:</h5>", unsafe_allow_html=True)
+# --- Initialize Clients ---
+# Using the official Google GenAI SDK client initialized directly with the API key
+gemini_client = genai.Client(api_key=gemini_api_key)
+tavily_client = TavilyClient(api_key=tavily_api_key)
+
+# --- Main UI layout ---
+st.markdown("### Research Topic")
+quick_topics = [
+    "Solid-State EV Batteries",
+    "DuckDB vs Polars Analytics",
+    "AI Agents Enterprise 2026",
+]
+
 col1, col2, col3 = st.columns(3)
+selected_topic = None
 
-with col1:
-    if st.button("🔋 Solid-State EV Batteries"):
-        st.session_state.research_topic = "Latest developments in solid-state EV batteries"
-with col2:
-    if st.button("📊 DuckDB vs Polars Analytics"):
-        st.session_state.research_topic = "Key performance differences between DuckDB and Polars for data analytics"
-with col3:
-    if st.button("🤖 AI Agents Enterprise 2026"):
-        st.session_state.research_topic = "Enterprise adoption trends for autonomous AI agents in 2026"
+if col1.button("🔋 Solid-State EV Batteries"):
+  selected_topic = "Solid-State EV Batteries"
+if col2.button("📊 DuckDB vs Polars Analytics"):
+  selected_topic = "DuckDB vs Polars Analytics"
+if col3.button("🤖 AI Agents Enterprise 2026"):
+  selected_topic = "Enterprise adoption trends for autonomous AI agents in 2026"
 
-# Input Field bound directly to session state
-topic = st.text_input(
-    "Research Topic", 
-    key="research_topic",
-    placeholder="e.g., Global market trends in renewable energy..."
+topic_input = st.text_input(
+    "Research Topic Input",
+    value=selected_topic
+    or "Key performance differences between DuckDB and Polars for data analytics",
+    label_visibility="collapsed",
 )
-
-st.markdown("")
-
-def search_web(query: str) -> tuple[str, float]:
-    start_time = time.time()
-    tavily_client = TavilyClient(api_key=TAVILY_API_KEY)
-    response = tavily_client.search(query=query, max_results=4)
-    elapsed_time = round(time.time() - start_time, 2)
-    
-    formatted_results = []
-    for result in response.get("results", []):
-        formatted_results.append(
-            f"Title: {result['title']}\nURL: {result['url']}\nContent: {result['content']}\n"
-        )
-    return "\n".join(formatted_results), elapsed_time
 
 if st.button("✨ Generate Research Report", type="primary"):
-    if not topic.strip():
-        st.warning("Please enter or select a research topic first.")
-    elif not GEMINI_API_KEY or not TAVILY_API_KEY:
-        st.error("Server API keys are not configured properly in Streamlit Secrets.")
-    else:
-        with st.spinner("🤝 Searching the web & synthesizing report via Gemini 2.5 Flash..."):
-            try:
-                # 1. Search Tavily
-                search_context, tavily_latency = search_web(topic)
-                
-                # 2. Call Gemini using official SDK client
-                start_llm_time = time.time()
-                client = genai.Client(api_key=GEMINI_API_KEY)
-                
-                prompt_text = (
-                    "You are an expert research assistant and professional technical writer.\n"
-                    "Synthesize the provided search results into a clear, structured 1-page research report.\n"
-                    "Always cite source URLs directly in the text or in a References section at the bottom.\n\n"
-                    f"TOPIC TO RESEARCH: {topic}\n\n"
-                    f"SEARCH RESULTS & DATA:\n{search_context}"
-                )
-                
-                response = client.models.generate_content(
-                    model='gemini-2.5-flash',
-                    contents=prompt_text,
-                )
-                
-                llm_latency = round(time.time() - start_llm_time, 2)
-                report = response.text
-                
-                if report:
-                    st.success("✅ Research Report Generated Successfully!")
-                    
-                    # Technical Agent Execution Trace Expander
-                    with st.expander("🔍 Technical Agent Execution Trace & RAG Metadata"):
-                        st.markdown(f"**Query Intent:** `{topic}`")
-                        st.markdown(f"**Web Search Retrieval Latency:** `{tavily_latency} seconds` (Tavily AI)")
-                        st.markdown(f"**LLM Synthesis Latency:** `{llm_latency} seconds` (Google Gemini 2.5 Flash)")
-                        st.markdown("**Retrieved Context Snippets (Tool Output):**")
-                        st.code(search_context, language="text")
-                    
-                    st.markdown("---")
-                    st.markdown(f"""
-                        <div class="report-container">
-                            {report}
-                        </div>
-                    """, unsafe_allow_html=True)
-                else:
-                    st.error("No response generated from model.")
-            except Exception as e:
-                st.error(f"An error occurred: {str(e)}")
+  if not topic_input:
+    st.warning("Please enter a valid research topic.")
+  else:
+    with st.spinner("Executing Tavily web search and synthesizing report..."):
+      try:
+        # 1. Perform web search via Tavily
+        search_result = tavily_client.search(
+            query=topic_input, search_depth="advanced", max_results=5
+        )
+        sources = search_result.get("results", [])
+
+        context_text = "\n\n".join(
+            [f"Source: {s.get('url')}\nContent: {s.get('content')}" for s in sources]
+        )
+
+        # 2. Construct Prompt for Gemini
+        prompt = f"""
+        You are an expert research analyst. Using the web search context provided below, write a comprehensive, professional, well-structured research report addressing the topic: "{topic_input}".
+
+        Web Search Context:
+        {context_text}
+
+        Structure the report cleanly with markdown headings, key takeaways, deep-dive analysis, and a conclusion. Cite sources appropriately.
+        """
+
+        # 3. Generate response using Gemini 2.5 Flash
+        response = gemini_client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+        )
+
+        # 4. Render Report
+        st.markdown("---")
+        st.markdown("## 📄 Research Report Output")
+        st.markdown(response.text)
+
+        with st.expander("🔍 View RAG Execution & Search Trace"):
+          st.write(sources)
+
+      except Exception as e:
+        st.error(f"An error occurred: {e}")
