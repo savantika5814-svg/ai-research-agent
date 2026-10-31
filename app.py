@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import requests
+import time
 
 # Import Tavily cleanly
 try:
@@ -16,7 +17,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Warm Cream & Pastel Pink Theme with High-Contrast Sidebar Text
+# Custom CSS for Warm Cream & Pastel Pink Theme with High-Contrast Text
 st.markdown("""
     <style>
     /* Main Background - Warm Champagne / Cream */
@@ -173,15 +174,18 @@ topic = st.text_input(
 
 st.markdown("")
 
-def search_web(query: str) -> str:
+def search_web(query: str) -> tuple[str, float]:
+    start_time = time.time()
     tavily_client = TavilyClient(api_key=TAVILY_API_KEY)
     response = tavily_client.search(query=query, max_results=4)
+    elapsed_time = round(time.time() - start_time, 2)
+    
     formatted_results = []
     for result in response.get("results", []):
         formatted_results.append(
             f"Title: {result['title']}\nURL: {result['url']}\nContent: {result['content']}\n"
         )
-    return "\n".join(formatted_results)
+    return "\n".join(formatted_results), elapsed_time
 
 if st.button("✨ Generate Research Report", type="primary"):
     if not topic.strip():
@@ -192,9 +196,10 @@ if st.button("✨ Generate Research Report", type="primary"):
         with st.spinner("🤝 Searching the web & synthesizing report via Gemini 3.8 Flash..."):
             try:
                 # 1. Search Tavily
-                search_context = search_web(topic)
+                search_context, tavily_latency = search_web(topic)
                 
                 # 2. Call Gemini API securely on the server
+                start_llm_time = time.time()
                 url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key={GEMINI_API_KEY}"
                 prompt_text = (
                     "You are an expert research assistant and professional technical writer.\n"
@@ -207,11 +212,20 @@ if st.button("✨ Generate Research Report", type="primary"):
                 headers = {"Content-Type": "application/json"}
                 
                 res = requests.post(url, headers=headers, json=payload)
+                llm_latency = round(time.time() - start_llm_time, 2)
                 res_data = res.json()
                 
                 if "candidates" in res_data:
                     report = res_data["candidates"][0]["content"]["parts"][0]["text"]
                     st.success("✅ Research Report Generated Successfully!")
+                    
+                    # 🛠️ TECHNICAL AGENT EXECUTION TRACE EXPANDER
+                    with st.expander("🔍 Technical Agent Execution Trace & RAG Metadata"):
+                        st.markdown(f"**Query Intent:** `{topic}`")
+                        st.markdown(f"**Web Search Retrieval Latency:** `{tavily_latency} seconds` (Tavily AI)")
+                        st.markdown(f"**LLM Synthesis Latency:** `{llm_latency} seconds` (Google Gemini 3.8 Flash)")
+                        st.markdown("**Retrieved Context Snippets (Tool Output):**")
+                        st.code(search_context, language="text")
                     
                     st.markdown("---")
                     st.markdown(f"""
