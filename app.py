@@ -10,102 +10,126 @@ except ImportError:
 
 # Streamlit Page Setup
 st.set_page_config(
-    page_title="SynthetiSeek | Autonomous AI Research Agent", 
-    page_icon="🧠", 
+    page_title="VeritasAI | Autonomous Research Agent", 
+    page_icon="🌸", 
     layout="centered",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for modern UI aesthetics
+# Custom CSS for Pastel Pink & Off-White Theme
 st.markdown("""
     <style>
-    .main {
-        background-color: #0e1117;
+    /* Main Background */
+    .stApp {
+        background-color: #FAFAFA;
+        color: #374151;
     }
+    
+    /* Sidebar Styling */
+    section[data-testid="stSidebar"] {
+        background-color: #FFF5F7 !important;
+        border-right: 1px solid #FCE7F3;
+    }
+    
+    /* Inputs */
     .stTextInput input {
-        border-radius: 10px;
+        border-radius: 12px;
         padding: 12px;
-        border: 1px solid #30363d;
-        background-color: #161b22;
-        color: #c9d1d9;
+        border: 1.5px solid #FBCFE8;
+        background-color: #FFFFFF;
+        color: #374151;
     }
+    .stTextInput input:focus {
+        border-color: #F472B6;
+        box-shadow: 0 0 0 2px rgba(244, 114, 182, 0.2);
+    }
+    
+    /* Action Button */
     .stButton button {
-        border-radius: 10px;
+        border-radius: 12px;
         font-weight: 600;
         width: 100%;
-        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        background: linear-gradient(135deg, #F472B6 0%, #FB7185 100%);
         color: white;
         border: none;
-        padding: 0.6rem 1rem;
-        transition: opacity 0.2s ease;
+        padding: 0.65rem 1rem;
+        box-shadow: 0 4px 10px rgba(244, 114, 182, 0.25);
+        transition: transform 0.15s ease, opacity 0.2s ease;
     }
     .stButton button:hover {
-        opacity: 0.9;
+        opacity: 0.92;
+        transform: translateY(-1px);
+        color: white;
     }
+    
+    /* Report Output Container */
     .report-container {
-        background-color: #161b22;
-        padding: 2rem;
-        border-radius: 12px;
-        border: 1px solid #30363d;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        background-color: #FFFFFF;
+        padding: 2.2rem;
+        border-radius: 16px;
+        border: 1px solid #FCE7F3;
+        box-shadow: 0 10px 25px rgba(244, 114, 182, 0.08);
+        color: #1F2937;
+        line-height: 1.7;
     }
+    
+    /* Header Layout */
     .logo-header {
         display: flex;
         align-items: center;
-        gap: 15px;
-        margin-bottom: 0.5rem;
+        gap: 16px;
+        margin-bottom: 0.2rem;
     }
     .logo-header h1 {
         margin: 0;
-        font-size: 2.8rem;
+        font-size: 2.6rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #9D174D;
+        letter-spacing: -0.5px;
+    }
+    
+    /* Secondary text */
+    .sub-text {
+        color: #6B7280;
+        font-size: 1.05rem;
+        margin-bottom: 1.5rem;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # Sidebar Design
 with st.sidebar:
-    # Sidebar SVG Logo
+    # Sidebar SVG Logo (Pastel Pink Theme)
     st.markdown("""
-    <div style="text-align: center; margin-bottom: 20px;">
+    <div style="text-align: center; margin-bottom: 15px; margin-top: 10px;">
         <svg width="70" height="70" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="45" cy="45" r="32" stroke="#60A5FA" stroke-width="6"/>
-            <path d="M68 68L88 88" stroke="#A855F7" stroke-width="8" stroke-linecap="round"/>
-            <circle cx="35" cy="40" r="4" fill="#60A5FA"/>
-            <circle cx="55" cy="40" r="4" fill="#60A5FA"/>
-            <circle cx="45" cy="55" r="4" fill="#A855F7"/>
-            <path d="M35 40L45 55L55 40" stroke="#60A5FA" stroke-width="2"/>
+            <circle cx="50" cy="50" r="42" fill="#FCE7F3" stroke="#F472B6" stroke-width="3"/>
+            <path d="M32 40L50 70L68 40" stroke="#DB2777" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="50" cy="30" r="6" fill="#F472B6"/>
         </svg>
     </div>
     """, unsafe_allow_html=True)
-    st.subheader("Agent Architecture")
+    st.markdown("<h3 style='text-align: center; color: #9D174D;'>VeritasAI</h3>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("**Search Engine:** Tavily AI API")
     st.markdown("**Inference Engine:** Google Gemini 3.8 Flash")
     st.markdown("**Security:** Server-Side Encrypted Secrets")
     st.markdown("---")
-    st.info("💡 **Tip:** Try searching for broad market trends, technical breakdowns, or industry forecasts!")
+    st.info("💡 **Tip:** Ask broad market analysis, technical comparisons, or industry trends.")
 
 # Main Title Header with Logo
 st.markdown("""
 <div class="logo-header">
-    <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="45" cy="45" r="32" stroke="#60A5FA" stroke-width="6"/>
-        <path d="M68 68L88 88" stroke="#A855F7" stroke-width="8" stroke-linecap="round"/>
-        <circle cx="35" cy="40" r="4" fill="#60A5FA"/>
-        <circle cx="55" cy="40" r="4" fill="#60A5FA"/>
-        <circle cx="45" cy="55" r="4" fill="#A855F7"/>
-        <path d="M35 40L45 55L55 40" stroke="#60A5FA" stroke-width="2"/>
+    <svg width="55" height="55" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="42" fill="#FCE7F3" stroke="#F472B6" stroke-width="3"/>
+        <path d="M32 40L50 70L68 40" stroke="#DB2777" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="50" cy="30" r="6" fill="#F472B6"/>
     </svg>
-    <h1>SynthetiSeek</h1>
+    <h1>VeritasAI</h1>
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("Instantly orchestrate web searches and generate structured, citation-backed professional research reports.")
-st.markdown("")
+st.markdown('<p class="sub-text">Autonomous web research & intelligent report synthesis engine.</p>', unsafe_allow_html=True)
 
 # Securely load API keys from Streamlit Cloud Secrets (Server-side)
 try:
@@ -151,13 +175,13 @@ def search_web(query: str) -> str:
         )
     return "\n".join(formatted_results)
 
-if st.button("🚀 Generate Comprehensive Report", type="primary"):
+if st.button("✨ Generate Research Report", type="primary"):
     if not topic.strip():
         st.warning("Please enter or select a research topic first.")
     elif not GEMINI_API_KEY or not TAVILY_API_KEY:
         st.error("Server API keys are not configured properly.")
     else:
-        with st.spinner("🔍 Executing Tavily web search & synthesizing via Gemini 3.8 Flash..."):
+        with st.spinner("🌸 Searching the web & synthesizing report via Gemini 3.8 Flash..."):
             try:
                 # 1. Search Tavily
                 search_context = search_web(topic)
