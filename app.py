@@ -10,13 +10,13 @@ except ImportError:
 
 # Streamlit Page Setup
 st.set_page_config(
-    page_title="Autonomous AI Research Agent", 
-    page_icon="✨", 
+    page_title="SynthetiSeek | Autonomous AI Research Agent", 
+    page_icon="🧠", 
     layout="centered",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for polished, modern UI aesthetics
+# Custom CSS for modern UI aesthetics
 st.markdown("""
     <style>
     .main {
@@ -49,12 +49,38 @@ st.markdown("""
         border: 1px solid #30363d;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     }
+    .logo-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 0.5rem;
+    }
+    .logo-header h1 {
+        margin: 0;
+        font-size: 2.8rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
     </style>
 """, unsafe_allow_html=True)
 
 # Sidebar Design
 with st.sidebar:
-    st.image("https://img.icons8.com/clouds/200/artificial-intelligence.png", width=100)
+    # Sidebar SVG Logo
+    st.markdown("""
+    <div style="text-align: center; margin-bottom: 20px;">
+        <svg width="70" height="70" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="45" cy="45" r="32" stroke="#60A5FA" stroke-width="6"/>
+            <path d="M68 68L88 88" stroke="#A855F7" stroke-width="8" stroke-linecap="round"/>
+            <circle cx="35" cy="40" r="4" fill="#60A5FA"/>
+            <circle cx="55" cy="40" r="4" fill="#60A5FA"/>
+            <circle cx="45" cy="55" r="4" fill="#A855F7"/>
+            <path d="M35 40L45 55L55 40" stroke="#60A5FA" stroke-width="2"/>
+        </svg>
+    </div>
+    """, unsafe_allow_html=True)
     st.subheader("Agent Architecture")
     st.markdown("---")
     st.markdown("**Search Engine:** Tavily AI API")
@@ -63,8 +89,21 @@ with st.sidebar:
     st.markdown("---")
     st.info("💡 **Tip:** Try searching for broad market trends, technical breakdowns, or industry forecasts!")
 
-# Main Title Header
-st.title("✨ Autonomous AI Research Agent")
+# Main Title Header with Logo
+st.markdown("""
+<div class="logo-header">
+    <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="45" cy="45" r="32" stroke="#60A5FA" stroke-width="6"/>
+        <path d="M68 68L88 88" stroke="#A855F7" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="35" cy="40" r="4" fill="#60A5FA"/>
+        <circle cx="55" cy="40" r="4" fill="#60A5FA"/>
+        <circle cx="45" cy="55" r="4" fill="#A855F7"/>
+        <path d="M35 40L45 55L55 40" stroke="#60A5FA" stroke-width="2"/>
+    </svg>
+    <h1>SynthetiSeek</h1>
+</div>
+""", unsafe_allow_html=True)
+
 st.markdown("Instantly orchestrate web searches and generate structured, citation-backed professional research reports.")
 st.markdown("")
 
@@ -93,7 +132,7 @@ with col3:
     if st.button("🤖 AI Agents Enterprise 2026"):
         selected_quick_topic = "Enterprise adoption trends for autonomous AI agents in 2026"
 
-# Input Field (prefills if quick button is clicked)
+# Input Field
 topic = st.text_input(
     "Research Topic", 
     value=selected_quick_topic,
@@ -142,7 +181,6 @@ if st.button("🚀 Generate Comprehensive Report", type="primary"):
                     report = res_data["candidates"][0]["content"]["parts"][0]["text"]
                     st.success("✅ Research Report Generated Successfully!")
                     
-                    # Styled output card container
                     st.markdown("---")
                     st.markdown(f"""
                         <div class="report-container">
