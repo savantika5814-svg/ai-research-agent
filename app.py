@@ -61,7 +61,7 @@ st.markdown("""
         box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
     }
     
-    /* Streamlit Alert Boxes Fix (Warnings, Errors, Info, Success) */
+    /* Streamlit Alert Boxes Fix */
     div[data-baseweb="notification"], .stAlert {
         border-radius: 12px !important;
     }
@@ -147,7 +147,7 @@ with st.sidebar:
     st.markdown("<h3 style='text-align: center; color: #831843 !important;'>VeritasAI</h3>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("**Search Engine:** Tavily AI API")
-    st.markdown("**Inference Engine:** Google Gemini 3.8 Flash")
+    st.markdown("**Inference Engine:** Google Gemini 2.5 Flash")
     st.markdown("**Security:** Server-Side Encrypted Secrets")
     st.markdown("---")
     st.info("💡 **Tip:** Ask broad market analysis, technical comparisons, or industry trends.")
@@ -177,7 +177,7 @@ except Exception:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 
-# Quick suggestion chips using session state callbacks
+# Quick suggestion chips
 st.markdown("<h5 style='color: #4A044E;'>Quick Topics:</h5>", unsafe_allow_html=True)
 col1, col2, col3 = st.columns(3)
 
@@ -217,16 +217,16 @@ if st.button("✨ Generate Research Report", type="primary"):
     if not topic.strip():
         st.warning("Please enter or select a research topic first.")
     elif not GEMINI_API_KEY or not TAVILY_API_KEY:
-        st.error("Server API keys are not configured properly.")
+        st.error("Server API keys are not configured properly in Streamlit Secrets.")
     else:
-        with st.spinner("🤝 Searching the web & synthesizing report via Gemini 3.8 Flash..."):
+        with st.spinner("🤝 Searching the web & synthesizing report via Gemini 2.5 Flash..."):
             try:
                 # 1. Search Tavily
                 search_context, tavily_latency = search_web(topic)
                 
                 # 2. Call Gemini API securely on the server
                 start_llm_time = time.time()
-                url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key={GEMINI_API_KEY}"
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
                 prompt_text = (
                     "You are an expert research assistant and professional technical writer.\n"
                     "Synthesize the provided search results into a clear, structured 1-page research report.\n"
@@ -249,7 +249,7 @@ if st.button("✨ Generate Research Report", type="primary"):
                     with st.expander("🔍 Technical Agent Execution Trace & RAG Metadata"):
                         st.markdown(f"**Query Intent:** `{topic}`")
                         st.markdown(f"**Web Search Retrieval Latency:** `{tavily_latency} seconds` (Tavily AI)")
-                        st.markdown(f"**LLM Synthesis Latency:** `{llm_latency} seconds` (Google Gemini 3.8 Flash)")
+                        st.markdown(f"**LLM Synthesis Latency:** `{llm_latency} seconds` (Google Gemini 2.5 Flash)")
                         st.markdown("**Retrieved Context Snippets (Tool Output):**")
                         st.code(search_context, language="text")
                     
