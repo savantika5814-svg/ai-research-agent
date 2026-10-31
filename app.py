@@ -128,6 +128,10 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Initialize Session State for Research Topic
+if "research_topic" not in st.session_state:
+    st.session_state.research_topic = ""
+
 # Sidebar Design with Helping Hand Logo
 with st.sidebar:
     st.markdown("""
@@ -173,25 +177,24 @@ except Exception:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 
-# Quick suggestion chips
+# Quick suggestion chips using session state callbacks
 st.markdown("<h5 style='color: #4A044E;'>Quick Topics:</h5>", unsafe_allow_html=True)
 col1, col2, col3 = st.columns(3)
-selected_quick_topic = ""
 
 with col1:
     if st.button("🔋 Solid-State EV Batteries"):
-        selected_quick_topic = "Latest developments in solid-state EV batteries"
+        st.session_state.research_topic = "Latest developments in solid-state EV batteries"
 with col2:
     if st.button("📊 DuckDB vs Polars Analytics"):
-        selected_quick_topic = "Key performance differences between DuckDB and Polars for data analytics"
+        st.session_state.research_topic = "Key performance differences between DuckDB and Polars for data analytics"
 with col3:
     if st.button("🤖 AI Agents Enterprise 2026"):
-        selected_quick_topic = "Enterprise adoption trends for autonomous AI agents in 2026"
+        st.session_state.research_topic = "Enterprise adoption trends for autonomous AI agents in 2026"
 
-# Input Field
+# Input Field bound directly to session state
 topic = st.text_input(
     "Research Topic", 
-    value=selected_quick_topic,
+    key="research_topic",
     placeholder="e.g., Global market trends in renewable energy..."
 )
 
