@@ -224,9 +224,16 @@ if st.button("✨ Generate Research Report", type="primary"):
                 # 1. Search Tavily
                 search_context, tavily_latency = search_web(topic)
                 
-                # 2. Call Gemini API securely on the server
+            
+               # 2. Call Gemini API securely via official HTTP headers
                 start_llm_time = time.time()
-                url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
+                url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+                
+                headers = {
+                    "Content-Type": "application/json",
+                    "x-goog-api-key": GEMINI_API_KEY
+                }
+                
                 prompt_text = (
                     "You are an expert research assistant and professional technical writer.\n"
                     "Synthesize the provided search results into a clear, structured 1-page research report.\n"
@@ -235,16 +242,10 @@ if st.button("✨ Generate Research Report", type="primary"):
                     f"SEARCH RESULTS & DATA:\n{search_context}"
                 )
                 payload = {"contents": [{"parts": [{"text": prompt_text}]}]}
-                headers = {"Content-Type": "application/json"}
                 
                 res = requests.post(url, headers=headers, json=payload)
                 llm_latency = round(time.time() - start_llm_time, 2)
                 res_data = res.json()
-                
-                if "candidates" in res_data:
-                    report = res_data["candidates"][0]["content"]["parts"][0]["text"]
-                    st.success("✅ Research Report Generated Successfully!")
-                    
                     # 🛠️ TECHNICAL AGENT EXECUTION TRACE EXPANDER
                     with st.expander("🔍 Technical Agent Execution Trace & RAG Metadata"):
                         st.markdown(f"**Query Intent:** `{topic}`")
