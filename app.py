@@ -17,13 +17,18 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Warm Cream & Pastel Pink Theme with High-Contrast Text
+# Custom CSS for Theme Consistency & High-Contrast Text Fixes
 st.markdown("""
     <style>
     /* Main Background - Warm Champagne / Cream */
     .stApp {
         background-color: #FAF8F5;
-        color: #374151;
+        color: #1F2937 !important;
+    }
+    
+    /* Global Text Color Override for Readability */
+    .stApp p, .stApp span, .stApp label, .stApp div {
+        color: #1F2937;
     }
     
     /* Sidebar Styling - Soft Rose Tint with Dark Readable Text */
@@ -35,17 +40,34 @@ st.markdown("""
         color: #4A044E !important;
     }
     
-    /* Inputs */
+    /* Text Inputs & Placeholders */
+    .stTextInput label {
+        color: #4A044E !important;
+        font-weight: 600;
+    }
     .stTextInput input {
         border-radius: 12px;
         padding: 12px;
         border: 1.5px solid #FBCFE8;
-        background-color: #FFFFFF;
-        color: #374151;
+        background-color: #FFFFFF !important;
+        color: #1F2937 !important;
+    }
+    .stTextInput input::placeholder {
+        color: #9CA3AF !important;
+        opacity: 1;
     }
     .stTextInput input:focus {
         border-color: #EC4899;
         box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+    }
+    
+    /* Streamlit Alert Boxes Fix (Warnings, Errors, Info, Success) */
+    div[data-baseweb="notification"], .stAlert {
+        border-radius: 12px !important;
+    }
+    .stAlert p, div[data-baseweb="notification"] div {
+        color: #1F2937 !important;
+        font-weight: 600 !important;
     }
     
     /* Action Button */
@@ -54,16 +76,18 @@ st.markdown("""
         font-weight: 600;
         width: 100%;
         background: linear-gradient(135deg, #EC4899 0%, #F43F5E 100%);
-        color: white;
+        color: #FFFFFF !important;
         border: none;
         padding: 0.65rem 1rem;
         box-shadow: 0 4px 10px rgba(236, 72, 153, 0.25);
         transition: transform 0.15s ease, opacity 0.2s ease;
     }
+    .stButton button p {
+        color: #FFFFFF !important;
+    }
     .stButton button:hover {
         opacity: 0.92;
         transform: translateY(-1px);
-        color: white;
     }
     
     /* Report Output Container */
@@ -73,8 +97,11 @@ st.markdown("""
         border-radius: 16px;
         border: 1px solid #FBCFE8;
         box-shadow: 0 10px 25px rgba(236, 72, 153, 0.08);
-        color: #1F2937;
+        color: #1F2937 !important;
         line-height: 1.7;
+    }
+    .report-container * {
+        color: #1F2937 !important;
     }
     
     /* Header Layout */
@@ -88,13 +115,13 @@ st.markdown("""
         margin: 0;
         font-size: 2.6rem;
         font-weight: 800;
-        color: #831843;
+        color: #831843 !important;
         letter-spacing: -0.5px;
     }
     
     /* Secondary text */
     .sub-text {
-        color: #6B7280;
+        color: #4B5563 !important;
         font-size: 1.05rem;
         margin-bottom: 1.5rem;
     }
@@ -107,15 +134,13 @@ with st.sidebar:
     <div style="text-align: center; margin-bottom: 15px; margin-top: 10px;">
         <svg width="75" height="75" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="42" fill="#FFFFFF" stroke="#EC4899" stroke-width="3"/>
-            <!-- Helping Hand / Cradling Support Icon -->
             <path d="M30 60C30 60 38 72 50 72C62 72 70 60 70 60" stroke="#DB2777" stroke-width="5" stroke-linecap="round"/>
             <path d="M38 52L45 59L65 38" stroke="#DB2777" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Spark / Guidance Node -->
             <circle cx="65" cy="30" r="5" fill="#EC4899"/>
         </svg>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center; color: #831843;'>VeritasAI</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center; color: #831843 !important;'>VeritasAI</h3>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("**Search Engine:** Tavily AI API")
     st.markdown("**Inference Engine:** Google Gemini 3.8 Flash")
@@ -128,10 +153,8 @@ st.markdown("""
 <div class="logo-header">
     <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="42" fill="#FFFFFF" stroke="#EC4899" stroke-width="3"/>
-        <!-- Helping Hand / Cradling Support Icon -->
         <path d="M30 60C30 60 38 72 50 72C62 72 70 60 70 60" stroke="#DB2777" stroke-width="5" stroke-linecap="round"/>
         <path d="M38 52L45 59L65 38" stroke="#DB2777" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- Spark / Guidance Node -->
         <circle cx="65" cy="30" r="5" fill="#EC4899"/>
     </svg>
     <h1>VeritasAI</h1>
@@ -151,7 +174,7 @@ except Exception:
     TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 
 # Quick suggestion chips
-st.markdown("##### Quick Topics:")
+st.markdown("<h5 style='color: #4A044E;'>Quick Topics:</h5>", unsafe_allow_html=True)
 col1, col2, col3 = st.columns(3)
 selected_quick_topic = ""
 
