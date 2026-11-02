@@ -27,6 +27,7 @@ graph TD
 
 -Execution Trace Viewer: Expandable debug trace showing exact retrieved source URLs, titles, and content snippets used for synthesis
 
+
 ##🚀 Tech Stack
 Frontend & UI: Streamlit
 
@@ -34,12 +35,15 @@ Search Engine: Tavily AI API (tavily-python)
 
 Inference Engine: OpenRouter API (openai client-compatible wrapper)
 
+
 ##🔑 Free Tier Limits & Quotas
 Tavily AI Search: Provides 1,000 free search queries per month (~33 deep-dive reports per day).
 
 OpenRouter: Free models support 20 requests per minute and 50 full generations per day at zero cost.
 
+
 ##🛠️ Local Installation & Setup
+
 1.Clone the Repository:git clone [https://github.com/savantika5814-svg/ai-research-agent.git](https://github.com/savantika5814-svg/ai-research-agent.git)
 cd ai-research-agent
 2.Install Dependencies:
