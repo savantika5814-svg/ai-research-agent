@@ -13,30 +13,31 @@ graph TD
     C -->|Retrieved Web Sources & Context| D[OpenRouter LLM Engine]
     D -->|Synthesized Structured Report| E[Pastel Cream & Pink Card Output]
     E -->|Debug Trace & Links| F[Search Trace Expandable View]
-✨ Key Features
-Autonomous Web Scraping & RAG: Leverages Tavily AI’s advanced search API to retrieve high-precision web sources and context snippets.
 
-Universal LLM Synthesis: Powered by OpenRouter’s free-tier routing, seamlessly generating comprehensive markdown reports complete with executive summaries, technical comparisons, and source citations.
+## ✨ Key Features
+-Autonomous Web Scraping & RAG: Leverages Tavily AI’s advanced search API to retrieve high-precision web sources and context snippets.
 
-Interactive Quick Topics: One-click preset query buttons for instant analysis on emerging tech domains (e.g., Solid-State EV Batteries, DuckDB vs Polars, Enterprise AI Agents).
+-Universal LLM Synthesis: Powered by OpenRouter’s free-tier routing, seamlessly generating comprehensive markdown reports complete with executive summaries, technical comparisons, and source citations.
 
-Custom Aesthetic UI: Tailored with a cozy pastel cream background (#faf6ed), high-contrast typography, and dark-to-pink smudge gradient buttons.
+-Interactive Quick Topics: One-click preset query buttons for instant analysis on emerging tech domains (e.g., Solid-State EV Batteries, DuckDB vs Polars, Enterprise AI Agents).
 
-Execution Trace Viewer: Expandable debug trace showing exact retrieved source URLs, titles, and content snippets used for synthesis.
+-Custom Aesthetic UI: Tailored with a cozy pastel cream background (#faf6ed), high-contrast typography, and dark-to-light pink smudge gradient buttons.
 
-🚀 Tech Stack
+-Execution Trace Viewer: Expandable debug trace showing exact retrieved source URLs, titles, and content snippets used for synthesis
+
+##🚀 Tech Stack
 Frontend & UI: Streamlit
 
 Search Engine: Tavily AI API (tavily-python)
 
 Inference Engine: OpenRouter API (openai client-compatible wrapper)
 
-🔑 Free Tier Limits & Quotas
+##🔑 Free Tier Limits & Quotas
 Tavily AI Search: Provides 1,000 free search queries per month (~33 deep-dive reports per day).
 
 OpenRouter: Free models support 20 requests per minute and 50 full generations per day at zero cost.
 
-🛠️ Local Installation & Setup
+##🛠️ Local Installation & Setup
 1.Clone the Repository:git clone [https://github.com/savantika5814-svg/ai-research-agent.git](https://github.com/savantika5814-svg/ai-research-agent.git)
 cd ai-research-agent
 2.Install Dependencies:
@@ -46,7 +47,7 @@ Create a .streamlit/secrets.toml file locally for development:OPENROUTER_API_KEY
 TAVILY_API_KEY = "your-tavily-api-key"
 Run the App Locally:streamlit run app.py
 
-📦 Streamlit Cloud Deployment
+##📦 Streamlit Cloud Deployment
 1.Push your code and requirements.txt to your GitHub repository.
 
 2.Link the repository to Streamlit Cloud.
