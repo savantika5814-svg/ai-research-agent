@@ -10,72 +10,82 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- Custom Styling (Light Theme) ---
+# --- Custom Styling (Pastel Cream & Pink Smudge Theme) ---
 st.markdown(
     """
     <style>
-    /* Main Light Background & Dark Text */
+    /* Main Pastel Cream Background & High-Contrast Dark Text */
     .stApp {
-        background-color: #f8fafc;
-        color: #1e293b;
+        background-color: #faf6ed;
+        color: #2b2321;
     }
     
-    /* Sidebar Light Theme */
+    /* Sidebar Styling */
     [data-testid="stSidebar"] {
-        background-color: #f1f5f9;
-        border-right: 1px solid #e2e8f0;
+        background-color: #f2ece1;
+        border-right: 1px solid #e7ded0;
+    }
+    [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] li, [data-testid="stSidebar"] label {
+        color: #3d322e !important;
     }
     
-    /* Headers Styling */
-    h1, h2, h3 {
-        color: #be185d !important;
+    /* Headers & Titles */
+    h1, h2, h3, h4, h5, h6 {
+        color: #9d174d !important;
         font-family: 'Inter', sans-serif;
         font-weight: 700;
+    }
+    
+    /* General Text Readability */
+    p, span, label, .stMarkdown, .streamlit-expanderHeader {
+        color: #2b2321 !important;
     }
     
     /* Input Fields */
     .stTextInput>div>div>input {
         background-color: #ffffff;
-        color: #0f172a;
-        border: 1px solid #cbd5e1;
+        color: #2b2321;
+        border: 1px solid #d4c5b9;
         border-radius: 8px;
     }
     
-    /* Card Container for Output */
-    .metric-card {
-        background-color: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 24px;
-        color: #1e293b;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    }
-    
-    /* Buttons */
+    /* Pink Buttons & Boxes with Dark-to-Light Pink Smudge Gradient */
     .stButton>button {
-        background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
-        color: white;
+        background: linear-gradient(135deg, #be185d 0%, #db2777 50%, #f472b6 100%);
+        color: #ffffff;
         border: none;
-        border-radius: 8px;
+        border-radius: 10px;
         font-weight: 600;
-        padding: 8px 16px;
-        transition: all 0.2s ease;
+        padding: 10px 20px;
+        box-shadow: 0 4px 15px rgba(190, 24, 93, 0.25);
+        transition: all 0.3s ease;
     }
     .stButton>button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(190, 24, 93, 0.4);
+        background: linear-gradient(135deg, #9d174d 0%, #be185d 50%, #ec4899 100%);
+    }
+    
+    /* Report Output Card */
+    .metric-card {
+        background-color: #ffffff;
+        border: 1px solid #e7ded0;
+        border-radius: 14px;
+        padding: 24px;
+        color: #2b2321;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
     }
     
     /* Status Badge */
     .status-badge {
         display: inline-block;
-        padding: 4px 12px;
+        padding: 6px 14px;
         border-radius: 20px;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         font-weight: 600;
-        background-color: #fce7f3;
-        color: #be185d;
-        border: 1px solid #fbcfe8;
+        background: linear-gradient(135deg, #fbcfe8 0%, #f472b6 100%);
+        color: #831843;
+        border: 1px solid #f472b6;
     }
     </style>
 """,
@@ -191,7 +201,7 @@ if st.button("✨ Generate Research Report", type="primary"):
 
         report_content = response.choices[0].message.content
 
-        # 4. Render Output inside clean light card
+        # 4. Render Output inside clean card
         st.markdown("---")
         st.markdown("## 📄 Research Report Output")
         st.markdown(
