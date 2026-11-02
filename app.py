@@ -10,40 +10,50 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- Custom Styling & Theme Override ---
+# --- Custom Styling (Light Theme) ---
 st.markdown(
     """
     <style>
-    /* Main Background & Fonts */
+    /* Main Light Background & Dark Text */
     .stApp {
-        background-color: #0d0f12;
-        color: #e2e8f0;
+        background-color: #f8fafc;
+        color: #1e293b;
     }
     
-    /* Sidebar Styling */
+    /* Sidebar Light Theme */
     [data-testid="stSidebar"] {
-        background-color: #161a22;
-        border-right: 1px solid #2d3748;
+        background-color: #f1f5f9;
+        border-right: 1px solid #e2e8f0;
     }
     
-    /* Headers & Title Styling */
+    /* Headers Styling */
     h1, h2, h3 {
-        color: #f472b6 !important;
+        color: #be185d !important;
         font-family: 'Inter', sans-serif;
+        font-weight: 700;
     }
     
-    /* Custom Card Containers */
+    /* Input Fields */
+    .stTextInput>div>div>input {
+        background-color: #ffffff;
+        color: #0f172a;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+    }
+    
+    /* Card Container for Output */
     .metric-card {
-        background-color: #1e293b;
-        border: 1px solid #334155;
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
         border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 20px;
+        padding: 24px;
+        color: #1e293b;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
     
     /* Buttons */
     .stButton>button {
-        background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
         color: white;
         border: none;
         border-radius: 8px;
@@ -56,14 +66,6 @@ st.markdown(
         box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
     }
     
-    /* Input Fields */
-    .stTextInput>div>div>input {
-        background-color: #1e293b;
-        color: #f8fafc;
-        border: 1px solid #475569;
-        border-radius: 8px;
-    }
-    
     /* Status Badge */
     .status-badge {
         display: inline-block;
@@ -71,9 +73,9 @@ st.markdown(
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
-        background-color: rgba(236, 72, 153, 0.15);
-        color: #f472b6;
-        border: 1px solid rgba(236, 72, 153, 0.3);
+        background-color: #fce7f3;
+        color: #be185d;
+        border: 1px solid #fbcfe8;
     }
     </style>
 """,
@@ -189,7 +191,7 @@ if st.button("✨ Generate Research Report", type="primary"):
 
         report_content = response.choices[0].message.content
 
-        # 4. Render Output
+        # 4. Render Output inside clean light card
         st.markdown("---")
         st.markdown("## 📄 Research Report Output")
         st.markdown(
