@@ -13,6 +13,8 @@ graph TD
     C -->|Retrieved Web Sources & Context| D[OpenRouter LLM Engine]
     D -->|Synthesized Structured Report| E[Pastel Cream & Pink Card Output]
     E -->|Debug Trace & Links| F[Search Trace Expandable View]
+```
+
 
 ## ✨ Key Features
 -Autonomous Web Scraping & RAG: Leverages Tavily AI’s advanced search API to retrieve high-precision web sources and context snippets.
