@@ -50,6 +50,7 @@ TAVILY_API_KEY = "your-tavily-api-key"
 Run the App Locally:streamlit run app.py
 
 ##📦 Streamlit Cloud Deployment
+
 1.Push your code and requirements.txt to your GitHub repository.
 
 2.Link the repository to Streamlit Cloud.
