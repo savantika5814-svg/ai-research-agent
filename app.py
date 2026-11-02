@@ -1,5 +1,5 @@
 import streamlit as st
-from google import genai
+from openai import OpenAI
 from tavily import TavilyClient
 
 # --- Page Config & Styling ---
@@ -16,28 +16,25 @@ st.sidebar.markdown(
 
 # --- API Keys Validation ---
 try:
-  gemini_api_key = st.secrets["GEMINI_API_KEY"].strip()
+  openrouter_api_key = st.secrets["OPENROUTER_API_KEY"].strip()
   tavily_api_key = st.secrets["TAVILY_API_KEY"].strip()
 except Exception:
   st.error(
-      "Missing API keys in Streamlit Secrets! Please add `GEMINI_API_KEY` and"
-      " `TAVILY_API_KEY`."
+      "Missing API keys in Streamlit Secrets! Please add `OPENROUTER_API_KEY`"
+      " and `TAVILY_API_KEY`."
   )
   st.stop()
 
 # --- Initialize Clients ---
-# Using the official Google GenAI SDK client initialized directly with the API key
-gemini_client = genai.Client(api_key=gemini_api_key)
+# OpenRouter uses the standard OpenAI client format
+llm_client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=openrouter_api_key,
+)
 tavily_client = TavilyClient(api_key=tavily_api_key)
 
 # --- Main UI layout ---
 st.markdown("### Research Topic")
-quick_topics = [
-    "Solid-State EV Batteries",
-    "DuckDB vs Polars Analytics",
-    "AI Agents Enterprise 2026",
-]
-
 col1, col2, col3 = st.columns(3)
 selected_topic = None
 
@@ -71,7 +68,7 @@ if st.button("✨ Generate Research Report", type="primary"):
             [f"Source: {s.get('url')}\nContent: {s.get('content')}" for s in sources]
         )
 
-        # 2. Construct Prompt for Gemini
+        # 2. Construct Prompt
         prompt = f"""
         You are an expert research analyst. Using the web search context provided below, write a comprehensive, professional, well-structured research report addressing the topic: "{topic_input}".
 
@@ -81,16 +78,18 @@ if st.button("✨ Generate Research Report", type="primary"):
         Structure the report cleanly with markdown headings, key takeaways, deep-dive analysis, and a conclusion. Cite sources appropriately.
         """
 
-        # 3. Generate response using Gemini 2.5 Flash
-        response = gemini_client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt,
+        # 3. Generate response using OpenRouter free tier models (e.g. Meta Llama 3 or Auto-free router)
+        response = llm_client.chat.completions.create(
+            model="openrouter/free",  # Automatically routes to the best available free model!
+            messages=[{"role": "user", "content": prompt}],
         )
+
+        report_content = response.choices[0].message.content
 
         # 4. Render Report
         st.markdown("---")
         st.markdown("## 📄 Research Report Output")
-        st.markdown(response.text)
+        st.markdown(report_content)
 
         with st.expander("🔍 View RAG Execution & Search Trace"):
           st.write(sources)
